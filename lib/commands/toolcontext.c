@@ -1677,7 +1677,7 @@ struct cmd_context *create_toolcontext(unsigned is_clvmd,
 	/* FIXME Make this configurable? */
 	reset_lvm_errno(1);
 
-#ifndef VALGRIND_POOL
+#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
 	/* Set in/out stream buffering before glibc */
 	if (set_buffering
 #ifdef SYS_gettid
@@ -2064,7 +2064,7 @@ void destroy_toolcontext(struct cmd_context *cmd)
 
 	if (cmd->pending_delete_mem)
 		dm_pool_destroy(cmd->pending_delete_mem);
-#ifndef VALGRIND_POOL
+#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
 	if (cmd->linebuffer) {
 		/* Reset stream buffering to defaults */
 		if (is_valid_fd(STDIN_FILENO) &&

@@ -3384,7 +3384,7 @@ static int _check_standard_fds(void)
 	int err = is_valid_fd(STDERR_FILENO);
 
 	if (!is_valid_fd(STDIN_FILENO) &&
-	    !(stdin = fopen(_PATH_DEVNULL, "r"))) {
+	    !freopen(_PATH_DEVNULL, "r", stdin)) {
 		if (err)
 			perror("stdin stream open");
 		else
@@ -3394,7 +3394,7 @@ static int _check_standard_fds(void)
 	}
 
 	if (!is_valid_fd(STDOUT_FILENO) &&
-	    !(stdout = fopen(_PATH_DEVNULL, "w"))) {
+	    !freopen(_PATH_DEVNULL, "w", stdout)) {
 		if (err)
 			perror("stdout stream open");
 		/* else no stdout */
@@ -3402,7 +3402,7 @@ static int _check_standard_fds(void)
 	}
 
 	if (!is_valid_fd(STDERR_FILENO) &&
-	    !(stderr = fopen(_PATH_DEVNULL, "w"))) {
+	    !freopen(_PATH_DEVNULL, "w", stderr)) {
 		printf("stderr stream open: %s\n",
 		       strerror(errno));
 		return 0;

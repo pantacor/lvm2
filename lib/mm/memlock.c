@@ -26,6 +26,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <malloc.h>
+#include <stdlib.h>
 
 #ifdef HAVE_VALGRIND
 #include <valgrind.h>
@@ -160,7 +161,7 @@ static void _touch_memory(void *mem, size_t size)
 
 static void _allocate_memory(void)
 {
-#ifndef VALGRIND_POOL
+#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
 	void *stack_mem;
 	struct rlimit limit;
 	int i, area = 0, missing = _size_malloc_tmp, max_areas = 32, hblks;
